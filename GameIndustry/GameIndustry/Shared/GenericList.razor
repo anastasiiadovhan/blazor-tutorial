@@ -1,0 +1,86 @@
+﻿@typeparam TItem
+
+@if (ListOfItems == null)
+{
+    @if (NullList != null)
+    {
+        @NullList
+    }
+    else
+    {
+        <img src="images/loading.gif" height="50" />
+    }
+
+}
+else if (ListOfItems.Count == 0)
+{
+    @if (NullList != null)
+    {
+        @EmptyList
+    }
+    else
+    {
+        <img src="images/nothing-found.png" height="50" />
+    }
+}
+else
+{
+    @foreach (var item in ListOfItems)
+    {
+        @ItemTemplate(item)
+    }
+}
+
+@code {
+
+    // Passing parameter to GameListTable to configure text that will be shown if there is no items in array
+    [Parameter] public RenderFragment NullList { get; set; }
+
+    // When array doesn't exist
+    [Parameter] public RenderFragment EmptyList { get; set; }
+
+    // Render Fragment to enable specifying game property in GameListTable.razor,
+    // so that we don't need to reference Invididual component and its properties here,
+    // but we'll reference in GameListTable by Geneeric List -> ItemTemplate -> Individual Game
+    [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; }
+
+    // list that will be specified in GameListTable
+    [Parameter] public List<TItem> ListOfItems { get; set; }
+}
+
+
+@*
+
+    Notes about Render Fragment
+
+        * If the fragment (ex. ChildContent) is not specified in another component, then its value is null and nothing will be displayed
+        (you won't see any error, just nothing will be rendered).
+
+        * Hence you need to proccess value when the value of ChildContent is null by writing
+        If ChildContent is not null, then render element. Otherwise show a picture or another html code.
+
+        * Now if we don't specify anything in GameListTable or other component where want to use Render Component, it will still show
+        the code that we specified in GenericList component in else statement.
+
+
+
+    Making Generic type (Creating a data that won't have a type (Like Game class))
+
+        *** This document will be a template and we'll be able to insert any data type we want in GameListTable
+
+        ------------------------------------------------------------------------------------------------------------
+        @typeparam needs to be started only with TItem
+        typeparam directive allows us to define one or more comma-separated generic paramets on our class
+        ------------------------------------------------------------------------------------------------------------
+
+        * Creating New Render Fragment, so that consuming razor files may specify a template for rendering each TItem in the Game property.
+        * Creating parametr for array list with type TItem ListOfItems (because we go through loop to get items from array, but this
+        array will be specified in consuming razor file)
+
+        * 
+
+
+
+
+
+*@

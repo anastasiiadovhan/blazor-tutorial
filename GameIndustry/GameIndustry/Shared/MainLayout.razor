@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>GameIndustry</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @*<CascadingValue Value="Color" Name="Color">
+                <CascadingValue Value="Size" Name="Size">*@
+            <CascadingValue Value="appStyle">
+                    @Body
+             </CascadingValue>
+                @*</CascadingValue>
+            </CascadingValue>*@ 
+        </article>
+    </main>
+</div>
+
+
+@code {
+    string Color = "blue";
+    string Size = "65px";
+
+    AppStyle appStyle = new AppStyle();
+
+}

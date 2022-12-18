@@ -1,0 +1,97 @@
+﻿@page "/"
+
+@inject GameIndustry.Repository.IRepository repository
+
+<div class="row">
+    <div class="col text-center">
+        <h1>Welcome to our Game Industry Page</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <h3>Show all games in MOCK database:</h3>
+    </div>
+</div>
+
+<GameListTable Games="games" />
+
+<IndividualGame Game="oneGametoShow" IsTable="false" DisplayButtons="true" SwitchGame="ShowNewGame" />
+
+<Confirmation @ref="confirmation" onCancel="OnCancel" onConfirm="OnConfirm">
+    <div class="text-danger">
+        Do you wish to switch "@oneGametoShow.Name"?
+    </div>
+</Confirmation>
+
+<div class="row p-3">
+    <div class="col text-center">
+        <button @onclick="AddNewGame" class="btn btn-success">Add New Game</button>
+    </div>
+</div>
+
+@code {
+
+    List<Game> games;
+
+    Random rnd;
+    Game oneGametoShow;
+
+    Confirmation confirmation;
+
+
+    // Step 1 to create a reference to the component
+
+    //GameListTable gameList;
+
+    protected async override Task OnInitializedAsync()
+    {
+        //await Task.Delay(2000);
+        //games = new List<Game>();
+        games = repository.GetAllGames();
+        rnd = new Random(DateTime.Now.Millisecond);
+        oneGametoShow = games[rnd.Next(0, games.Count)];
+    }
+
+    void ShowNewGame()
+    {
+        //oneGametoShow = SwitchGame();
+        confirmation.Show();
+    }
+
+    Game SwitchGame()
+    {
+        Game tempGame;
+
+        if (games.Count >= 2)
+        {
+            int iterator = rnd.Next(0, games.Count);
+            tempGame = games[iterator];
+        }
+        else if (games.Count == 1)
+            tempGame = games[0];
+        else
+            return new Game() { Name = "No items in the array", ReleaseDate = DateTime.Now };
+        return tempGame;
+    }
+
+    void AddNewGame()
+    {
+        //gameList.DoSomething();
+        games.Add(new Game() { Name = "Game for test", Genre = "Test", ReleaseDate = DateTime.Today });
+    }
+
+
+    // Modal
+
+    void OnCancel()
+    {
+        confirmation.Hide();
+    }
+
+    void OnConfirm()
+    {
+        oneGametoShow = SwitchGame();
+        confirmation.Hide();
+    }
+}

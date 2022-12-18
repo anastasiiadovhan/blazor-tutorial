@@ -1,0 +1,43 @@
+﻿@page "/counter"
+
+
+<div class="row">
+    <div class="col alert alert-secondary text-center">
+        @*<h1 style="color: @Color">Counter</h1>*@
+        <h1 style="color: @Styles.Color">Counter</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 text-left">
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    </div>
+    <div class="col-6 text-right">
+        @*<div style="font-size: @Size; color: @Color">@currentCount</div>*@
+        <div style="font-size: @Styles.Size; color: @Styles.Color">@currentCount</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <input type="number" class="form-control-lg" @bind="currentCount" />
+
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-6 text-center alert alert-primary">
+        Singleton count: @singleton.Value
+    </div>
+    <div class="col-6 text-center alert alert-danger">
+        Transient count: @transient.Value
+    </div>
+</div>
+
+
+
+@code {
+   
+
+}
+
